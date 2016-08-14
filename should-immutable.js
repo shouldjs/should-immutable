@@ -10,6 +10,8 @@
 
 var Iterable = Immutable.Iterable;
 var Set = Immutable.Set;
+var List = Immutable.Set;
+var Map = Immutable.Set;
 
 var t = should.modules.type;
 var format = should.modules.format;
@@ -23,35 +25,30 @@ var IMMUTABLE_INDEXED = new t.Type(t.OBJECT, 'immutable-iterable', 'indexed');
 var IMMUTABLE_KEYED = new t.Type(t.OBJECT, 'immutable-iterable', 'keyed');
 var IMMUTABLE_SET = new t.Type(t.OBJECT, 'immutable-iterable', 'set');
 
-// XXX dirty hack
-var objectCheck = t.checker.checks.pop();
-
-t.checker.add(function(obj) {
+t.checker.addBeforeFirstMatch(new List(), function(obj) {
   if (Iterable.isIndexed(obj)) {
     return IMMUTABLE_INDEXED;
   }
 });
 
-t.checker.add(function(obj) {
+t.checker.addBeforeFirstMatch(new Map(), function(obj) {
   if (Iterable.isKeyed(obj)) {
     return IMMUTABLE_KEYED;
   }
 });
 
-t.checker.add(function(obj) {
+t.checker.addBeforeFirstMatch(new Set(), function(obj) {
   if (Set.isSet(obj)) {
     return IMMUTABLE_SET;
   }
 });
 
 // must be last one
-t.checker.add(function(obj) {
+t.checker.addBeforeFirstMatch({}, function(obj) {
   if (Iterable.isIterable(obj)) {
     return IMMUTABLE_ITERABLE;
   }
 });
-
-t.checker.add(objectCheck);
 
 
 defaultTypeAdaptorStorage.addType(IMMUTABLE_ITERABLE, {
