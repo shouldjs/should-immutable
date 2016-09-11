@@ -104,4 +104,7 @@ eql.EQ.add(IMMUTABLE_ITERABLE.type, IMMUTABLE_ITERABLE.cls, function(a, b) {
   this.collectFail(!a.equals(b), 'Immutable iterables are not equal');
 });
 
+defaultTypeAdaptorStorage.addIterableType(IMMUTABLE_INDEXED);
+defaultTypeAdaptorStorage.addIterableType(IMMUTABLE_SET);
+
 }));
